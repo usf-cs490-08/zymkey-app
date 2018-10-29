@@ -1,0 +1,309 @@
+Help on package zymkey:
+
+NAME
+    zymkey
+
+FILE
+    /usr/local/lib/python2.7/dist-packages/zymkey/__init__.py
+
+PACKAGE CONTENTS
+    commands (package)
+    entrypoints
+    exceptions
+    filesystem
+    module
+    settings
+    utils
+    vault
+
+CLASSES
+    __builtin__.object
+        zymkey.module.Zymkey
+    
+    class Zymkey(__builtin__.object)
+     |  ## @brief The Zymkey class definition
+     |  #  @details
+     |  #  This class provides access to the Zymkey within Python
+     |  
+     |  Methods defined here:
+     |  
+     |  __del__(self)
+     |  
+     |  __init__(self)
+     |      ## @brief The class initialization opens and stores an instance of a
+     |      #  Zymkey context
+     |  
+     |  clear_perimeter_detect_info(self)
+     |      ## @brief Clear perimeter detect info.
+     |      #  @details This function clears all perimeter detect info and rearms all
+     |      #           perimeter detect channels
+     |  
+     |  create_ecdsa_public_key_file(self, filename, slot=0)
+     |      ## @brief Create a file with the PEM-formatted ECEDSA public key.
+     |      #  @details This method is useful for generating a Certificate
+     |      #           Signing Request.
+     |      #  @param filename The absolute file path where the public key will
+     |      #    be stored in PEM format.
+     |  
+     |  create_random_file(self, file_path, num_bytes)
+     |      ## @brief Deposit random data in a file
+     |      #  @param file_path    The absolute path name for the destination file
+     |      #  @param num_bytes The number of random bytes to get
+     |  
+     |  get_accelerometer_data(self)
+     |      ## @brief Get current accelerometer data and tap info.
+     |      #  @details This function gets the most recent accelerometer data in units of g
+     |      #           forces plus the tap direction per axis.
+     |      #  @param x
+     |      #         (output) An array of accelerometer readings in units of g-force.
+     |      #                  array index 0 = x axis
+     |      #                              1 = y axis
+     |      #                              2 = z axis
+     |      #         tap_dir
+     |      #         (output) The directional information for the last tap event. A value
+     |      #                  of -1 indicates that the tap event was detected in a
+     |      #                  negative direction for the axis, +1 for a positive direction
+     |      #                  and 0 for stationary.
+     |  
+     |  get_ecdsa_public_key(self, slot=0)
+     |      ## @brief Retrieves the ECEDSA public key as a binary bytearray.
+     |  
+     |  get_perimeter_detect_info(self)
+     |      ##  @brief Get current perimeter detect info.
+     |      #  @details This function gets the timestamp of the first perimeter detect
+     |      #           event for the given channel
+     |      #  @returns The array of timestamps for each channel for the first detected
+     |      #           event in epoch seconds
+     |  
+     |  get_random(self, num_bytes)
+     |      ## @brief Get some random bytes
+     |      #  @param num_bytes The number of random bytes to get
+     |  
+     |  get_time(self, precise=False)
+     |      ## @brief Get current GMT time
+     |      #  @details This function is called to get the time directly from a
+     |      #           Zymkey's Real Time Clock (RTC)
+     |      # @param precise If true, this API returns the time after the next second
+     |      #        falls. This means that the caller could be blocked up to one second.
+     |      #        If false, the API returns immediately with the current time reading.
+     |      # @returns The time in seconds from the epoch (Jan. 1, 1970)
+     |  
+     |  led_flash(self, on_ms, off_ms=0, num_flashes=0)
+     |      ## @brief Flash the LED
+     |      #  @param on_ms  The amount of time in milliseconds that the LED
+     |      #    will be on for
+     |      #  @param off_ms The amount of time in milliseconds that the LED
+     |      #    will be off for. If this parameter is set to 0 (default), the
+     |      #    off time is the same as the on time.
+     |      #  @param num_flashes The number of on/off cycles to execute. If
+     |      #    this parameter is set to 0 (default), the LED flashes
+     |      #    indefinitely.
+     |  
+     |  led_off(self)
+     |      ## @brief Turn the LED off
+     |  
+     |  led_on(self)
+     |      ## @brief Turn the LED on
+     |  
+     |  lock(self, src, dst=None, encryption_key='zymkey')
+     |      ## @brief Lock up source (plaintext) data
+     |      #  @details This method encrypts and signs a block of data.
+     |      #  @details
+     |      #    The zymkey has two keys that can be used for locking/unlocking
+     |      #    operations, designated as 'shared' and 'one-way'.
+     |      #      1. The one-way key is meant to lock up data only on the
+     |      #         local host computer. Data encrypted using this key cannot
+     |      #         be exported and deciphered anywhere else.
+     |      #      2. The shared key is meant for publishing data to other
+     |      #         sources that have the capability to generate the shared
+     |      #         key, such as the Zymbit cloud server.
+     |      #
+     |      #  @param src The source (plaintext) data. If typed as a basestring,
+     |      #    it is assumed to be an absolute file name path where the source
+     |      #    file is located, otherwise it is assumed to contain binary
+     |      #    data.
+     |      #  @param dst The destination (ciphertext) data. If specified as a
+     |      #    basestring, it is assumed to be an absolute file name path
+     |      #    where the destination data is meant to be deposited. Otherwise,
+     |      #    the locked data result is returned from the method call as a
+     |      #    bytearray. The default is 'None', which means that the data
+     |      #    will be returned to the caller as a bytearray.
+     |      #  @param encryption_key Specifies which key will be
+     |      #    used to lock the data up. A value of 'zymkey' (default)
+     |      #    specifies that the Zymkey will use the one-way key. A value of
+     |      #   'cloud' specifies that the shared key is used. Specify 'cloud' for
+     |      #    publishing data to some other source that is able to derive the
+     |      #    shared key (e.g. Zymbit cloud) and 'zymkey' when the data is
+     |      #    meant to reside exclusively within the host computer.
+     |  
+     |  set_i2c_address(self, address)
+     |      ## @brief Sets the i2c address of the Zymkey (i2c versions only)
+     |      #  @details This method should be called if the i2c address of the
+     |      #    Zymkey is shared with another i2c device on the same i2c bus.
+     |      #    The default i2c address for Zymkey units is 0x30. Currently,
+     |      #    the address may be set in the ranges of 0x30 - 0x37 and
+     |      #    0x60 - 0x67.
+     |      #
+     |      #    After successful completion of this command, the Zymkey will
+     |      #    reset itself.
+     |      #  @param address The i2c address that the Zymkey will set itself
+     |      #    to.
+     |  
+     |  set_perimeter_event_actions(self, channel, action_notify=True, action_self_destruct=False)
+     |      ## @brief Set perimeter breach action
+     |      #  @details This function specifies the action to take when a perimeter breach
+     |      #           event occurs. The possible actions are any combination of:
+     |      #               1. Notify host
+     |      #               2. Zymkey self-destruct
+     |      #  @param channel
+     |      #         (input) The channel that the action flags will be applied to
+     |      #         action_flags
+     |      #         (input) The actions to apply to the perimeter event channel:
+     |      #                 1. Notify (ZK_PERIMETER_EVENT_ACTION_NOTIFY)
+     |      #                 2. Self-destruct (ZK_PERIMETER_EVENT_ACTION_SELF_DESTRUCT)
+     |  
+     |  set_tap_sensitivity(self, axis='all', pct=50.0)
+     |      ## @brief Sets the sensitivity of tap operations.
+     |      #  @details This method permits setting the sensitivity of the tap
+     |      #           detection feature. Each axis may be individually
+     |      #           configured or all at once.
+     |      # @param axis The axis to configure. Valid values include:
+     |      #   1. 'all': Configure all axes with the specified sensitivity
+     |      #      value.
+     |      #   2. 'x' or 'X': Configure only the x-axis
+     |      #   3. 'y' or 'Y': Configure only the y-axis
+     |      #   4. 'z' or 'Z': Configure only the z-axis
+     |      # @param pct The sensitivity expressed as percentage.
+     |      #   1. 0% = Shut down: Tap detection should not occur along the
+     |      #      axis.
+     |      #   2. 100% = Maximum sensitivity.
+     |  
+     |  sign(self, src, slot=0)
+     |      ## @brief Generate a signature using the Zymkey's ECDSA private key.
+     |      #  @param src This parameter contains the digest of the data that
+     |      #    will be used to generate the signature.
+     |      #  @returns a byte array of the signature
+     |      #  @todo Allow for overloading of source parameter in similar
+     |      #    fashion to lock/unlockData.
+     |  
+     |  sign_digest(self, sha256, slot=0)
+     |      ## @brief Generate a signature using the Zymkey's ECDSA private key.
+     |      #  @param sha256 A hashlib.sha256 instance.
+     |      #  @todo Allow for overloading of source parameter in similar
+     |      #    fashion to lock/unlockData.
+     |  
+     |  unlock(self, src, dst=None, encryption_key='zymkey', raise_exception=True)
+     |      ## @brief Unlock source (ciphertext) data.
+     |      #  @details This method verifies a locked object signature and
+     |      #           decrypts the associated ciphertext data.
+     |      #
+     |      #    The zymkey has two keys that can be used for locking/unlocking
+     |      #    operations, designated as shared and one-way.
+     |      #      1. The one-way key is meant to lock up data only on the
+     |      #         local host computer. Data encrypted using this key cannot
+     |      #         be exported and deciphered anywhere else.
+     |      #      2. The shared key is meant for publishing data to other
+     |      #         sources that have the capability to generate the shared
+     |      #         key, such as the Zymbit cloud server.
+     |      #
+     |      #  @param src The source (ciphertext) data. If typed as a
+     |      #    basestring, it is assumed to be an absolute file name path
+     |      #    where the source file is located, otherwise it is assumed to
+     |      #    contain binary data.
+     |      #  @param dst The destination (plaintext) data. If specified as a
+     |      #    basestring, it is assumed to be an absolute file name path
+     |      #    where the destination data is meant to be deposited. Otherwise,
+     |      #    the locked data result is returned from the method call as a
+     |      #    bytearray. The default is 'None', which means that the data
+     |      #    will be returned to the caller as a bytearray.
+     |      #  @param encryption_key Specifies which key will be
+     |      #    used to unlock the source data. A value of 'zymkey' (default)
+     |      #    specifies that the Zymkey will use the one-way key. A value of
+     |      #    'cloud' specifies that the shared key is used. Specify 'cloud'
+     |      #    for publishing data to another source that has the shared key
+     |      #    (e.g. Zymbit cloud) and 'zymkey' when the data is meant to
+     |      #    reside exclusively withing the host computer.
+     |      #  @param raise_exception Specifies if an exception should be raised
+     |      #    if the locked object signature fails.
+     |  
+     |  verify(self, src, sig, raise_exception=True, slot=0, pubkey=None, pubkey_curve='NISTP256', sig_is_der=False)
+     |      ## @brief Verify the given buffer against the given signature.
+     |      #    The public key is not specified in the parameter list to ensure
+     |      #    that the public key that matches the Zymkey's ECDSA private key
+     |      #    is used.
+     |      #  @param src The buffer to verify
+     |      #  @param sig This parameter contains the signature to verify.
+     |      #  @param raise_exception By default, when verification fails a
+     |      #    VerificationError will be raised, unless this is set to False
+     |      #  @param slot The key slot to use to verify the signature against. Defaults to the first key slot.
+     |      #  @param pubkey A foreign public key which will be used to validate the
+     |      #    signature. If this parameter is specified, the slot parameter will be ignored.
+     |      #  @param pubkey_type This parameter specifies the EC curve type that 'pubkey' belongs to.
+     |      #    Acceptable values:
+     |      #       1. NISTP256
+     |      #       2. SECP256K1
+     |      #  @param sig_is_der set to 'True' if the signature is in DER format
+     |      #  @returns True for a good verification or False for a bad verification when raise_exception is False
+     |      #  @todo Allow for overloading of source parameter in similar
+     |      #    fashion to lock/unlockData.
+     |  
+     |  verify_digest(self, sha256, sig, raise_exception=True, slot=0, pubkey=None, pubkey_curve='NISTP256', sig_is_der=False)
+     |      ## @brief Verify a signature using the Zymkey's ECDSA public key.
+     |      #    The public key is not specified in the parameter list to ensure
+     |      #    that the public key that matches the Zymkey's ECDSA private key
+     |      #    is used.
+     |      #  @param sha256 A hashlib.sha256 instance that
+     |      #    will be used to generate the signature.
+     |      #  @param sig This parameter contains the signature to verify.
+     |      #  @param raise_exception By default, when verification fails a
+     |      #    VerificationError will be raised, unless this is set to False
+     |      #  @param slot The key slot to use to verify the signature against. Defaults to the first key slot.
+     |      #  @param pubkey A foreign public key which will be used to validate the
+     |      #    signature. If this parameter is specified, the slot parameter will be ignored.
+     |      #  @param pubkey_type This parameter specifies the EC curve type that 'pubkey' belongs to.
+     |      #    Acceptable values:
+     |      #       1. NISTP256
+     |      #       2. SECP256K1
+     |      #  @param sig_is_der set to 'True' if the signature is in DER format
+     |      #  @returns True for a good verification or False for a bad verification when raise_exception is False
+     |      #  @todo Allow for overloading of source parameter in similar
+     |      #    fashion to lock/unlockData.
+     |  
+     |  wait_for_perimeter_event(self, timeout_ms=-1)
+     |      ## @brief Wait for a perimeter breach event to be detected
+     |      #  @details This function is called in order to wait for a perimeter breach
+     |      #           event to occur. This function blocks the calling thread unless
+     |      #           called with a timeout of zero.
+     |      #  @param timeout_ms
+     |      #         (input) The maximum amount of time in milliseconds to wait for a tap
+     |      #         event to arrive.
+     |  
+     |  wait_for_tap(self, timeout_ms=-1)
+     |      ## @brief Wait for tap event
+     |      #  @brief Wait for a tap event to be detected
+     |      #  @details This function is called in order to wait for a tap event to occur.
+     |      #           This function blocks the calling thread unless called with a
+     |      #           timeout of zero.
+     |      #  @param timeout_ms
+     |      #         (input) The maximum amount of time in milliseconds to wait for a tap
+     |      #         event to arrive.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data and other attributes defined here:
+     |  
+     |  ZymkeyAccelAxisData = <class 'zymkey.module.ZymkeyAccelAxisData'>
+
+DATA
+    __all__ = ['Zymkey', 'client']
+    client = <zymkey.module.Zymkey object>
+
+
