@@ -7,6 +7,7 @@ def get_args():
     parser = argparse.ArgumentParser(description='Generate keys')
     parser.add_argument('-g', '--generate', action='store_true')
     parser.add_argument('-r', '--retrieve', action='store_true')
+    parser.add_argument('-p', '--public', action='store_true')
     parser.add_argument('filename')
     return parser.parse_args()
 
@@ -36,6 +37,9 @@ def get_key(input_file):
     out = fill(' '.join('{:02x}'.format(c) for c in decrypted))
     print(out)
 
+def gen_pub(filename):
+    zymkey.client.create_ecdsa_public_key_file(filename)
+
 def main():
     args = get_args()
     
@@ -47,6 +51,9 @@ def main():
         print("Retrieve keys")
         print("File: " + args.filename)
         get_key(args.filename)
+    elif (args.public):
+        gen_pub(args.filename)
+        
         
 if __name__ == '__main__':
     main()
