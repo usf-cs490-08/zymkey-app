@@ -5,8 +5,10 @@ sender = None
 
 def displayMenu():
     print("1: Send message")
-    print("2: Display history")
-    print("3: Exit")
+    print("2: View new messages")
+    print("3: Refresh contacts")
+    print("4: Generate public key")
+    print("5: Exit")
 
 
 def sendMessage():
@@ -17,11 +19,42 @@ def sendMessage():
     # TODO send via MessageSender class/entity...
     # sender.send(to, message)
 
-def displayHistory():
+
+def newMessages():
     # TODO
     #  only once read from user topic offset (0 -> X) into history data structure
     #  OR
     #  print history data structure
+    pass
+
+
+def refreshContacts():
+    '''
+        Update local address book
+        1. Consume from Kafka topic
+        2. Read address book contents
+        3. Unlock address book contents using Zymkey
+        4. Check if username and public key already exists in address book
+           a. If yes, do nothing
+           b. If no, append new username and public key mapping to address book
+        5. Lock updated address book contents
+        6. Write locked content back into address book 
+    '''
+    pass
+
+
+def genPublicKey():
+    '''
+        Generate public key for unique identification
+        1. Check if public key file exists in <path to be determined>
+           a. If yes, inform user that public key already exists and exit function
+           b. If no, proceed to step 2 
+        2. Call Zymkey module to generate public key
+        3. Build JSON object that has username and public key fields
+        4. Post object to "address book" topic
+        5. Lock generated key bits with Zymkey
+        6. Write locked key bits to <path>
+    '''
     pass
 
 def userInput():
@@ -34,18 +67,19 @@ def userInput():
     else:
         if opt == 1:
             sendMessage()
-
         elif opt == 2:
-            displayHistory()
-
+            newMessages()
         elif opt == 3:
+            refreshContacts()
+        elif opt == 4:
+            genPublicKey()
+        elif opt == 5:
             return False
-
         else:
             print("!!!!!\n Not a valid menu option\n!!!!!")
 
-
     return True
+
 
 def main():
     
@@ -72,6 +106,7 @@ def main():
     while run:
         displayMenu()
         run = userInput()
+
 
 if __name__ == "__main__":
     main()
