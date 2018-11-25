@@ -1,5 +1,6 @@
 import re
 from client import ChatClient
+from history import Message
 
 class Interface:
 
@@ -77,8 +78,13 @@ class Interface:
                             showTime = True
                         else:
                             userList = re.split(',', arg)
-                    # TODO : make this pretty
-                    print(self.client.getConversation(userList))
+                    for mes in self.client.getConversation(userList):
+                        if showTime:
+                            # TODO print timestamp + message
+                            pass
+                        else:
+                            # TODO add 'from' field
+                            print(mes.message)
                 pass
             elif cmd[0] == self.SEND_CMD:
                 # send <NAME>[,...,<NAME>] <MESSAGE>
