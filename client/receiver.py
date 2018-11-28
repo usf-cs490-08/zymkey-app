@@ -49,12 +49,16 @@ class MessageReceiver(Thread):
             else:
                 users = re.split('-', msg.topic())
                 val = msg.value().decode('utf-8')
+                # Added JSON parsing
+                json = val.split(',')
+                user = re.sub('[^a-zA-Z0-9]', '', json[0].split(':')[1])
+                content = re.sub('[^a-zA-Z0-9]', '', json[1].splitz(':')[1])
                 timestamp = msg.timestamp()[1]
                 self.history.putMessage(users, val, timestamp)
 
                 if self.isUnread(msg):
-                    # TODO: add 'from' field
-                    print('new message!', flush=True)
+                    # From field parsed from the JSON object
+                    print(f'new message from {user}!', flush=True)
 
                 self.consumer.commit(msg)
 

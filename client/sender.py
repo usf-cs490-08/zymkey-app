@@ -21,7 +21,9 @@ class MessageSender:
             else:
                 print('message sent!')
         try:
-            self.producer.produce(topic, message, on_delivery=delivery_callback)
+            # New format to send message - The King
+            formatMessage = f"{{From: \"{self.user}\", Message: \"{message}\"}}"
+            self.producer.produce(topic, formatMessage, on_delivery=delivery_callback)
             self.producer.poll(5) # wait for callback
             self.producer.flush()
         except BufferError:
