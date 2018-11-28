@@ -22,7 +22,7 @@ class MessageSender:
                 print('message sent!')
         try:
             # New format to send message - The King
-            formatMessage = f"{{From: \"{self.user}\", Message: \"{message}\"}}"
+            formatMessage = "{{From: \"{}\", Message: \"{}\"}}".format(self.user, message)
             self.producer.produce(topic, formatMessage, on_delivery=delivery_callback)
             self.producer.poll(5) # wait for callback
             self.producer.flush()
