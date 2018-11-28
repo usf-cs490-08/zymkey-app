@@ -1,6 +1,8 @@
 import re
 from client import ChatClient
 from history import Message
+from datetime import date
+import time
 
 class Interface:
 
@@ -62,7 +64,13 @@ class Interface:
                 print(self.HELP_STR)
             elif cmd[0] == self.USERS_CMD:
                 # users
-                print(self.client.getUsers())
+                #print(self.client.getUsers())
+                users = self.client.getUsers()
+                for i in users:
+                    datestamp = date.fromtimestamp(users[i].timestamp//1000)
+                    timestamp = time.strftime('%H:%M:%S', time.gmtime(users[i].timestamp/1000.0 - 28800))
+                    online = users[i].isOnline
+                    print("{} | Last seen: {} {} | Status: {} ".format(i, datestamp, timestamp, online))
             elif cmd[0] == self.LS_CMD:
                 # ls
                 print(self.client.listConversations())
