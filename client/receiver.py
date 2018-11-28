@@ -58,7 +58,7 @@ class MessageReceiver(Thread):
 
                 if self.isUnread(msg):
                     # From field parsed from the JSON object
-                    print(f'new message from {user}!', flush=True)
+                    print('new message from {}!'.format(user), flush=True)
 
                 self.consumer.commit(msg)
 
