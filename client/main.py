@@ -42,6 +42,12 @@ class Interface:
         print()
         return user
 
+    @staticmethod
+    def buildTimestamp(value):
+        datestamp = date.fromtimestamp(value//1000)
+        timestamp = time.strftime('%H:%M:%S', time.gmtime(value/1000 - 28800))
+        return datestamp, timestamp
+
     def run(self):
         shutdown = False
         while not shutdown:
@@ -67,10 +73,11 @@ class Interface:
                 #print(self.client.getUsers())
                 users = self.client.getUsers()
                 for i in users:
-                    datestamp = date.fromtimestamp(users[i].timestamp//1000)
-                    timestamp = time.strftime('%H:%M:%S', time.gmtime(users[i].timestamp/1000.0 - 28800))
+                    #datestamp = date.fromtimestamp(users[i].timestamp//1000)
+                    #timestamp = time.strftime('%H:%M:%S', time.gmtime(users[i].timestamp/1000.0 - 28800))
+                    datestamp, timestamp = self.buildTimestamp(users[i].timestamp)
                     online = users[i].isOnline
-                    print("{} | Last seen: {} {} | Status: {} ".format(i, datestamp, timestamp, online))
+                    print("{:10} | Last seen: {} {} | Status: {} ".format(i, datestamp, timestamp, online))
             elif cmd[0] == self.LS_CMD:
                 # ls
                 print(self.client.listConversations())
@@ -89,6 +96,7 @@ class Interface:
                     for mes in self.client.getConversation(userList):
                         if showTime:
                             # TODO print timestamp + message
+                            #datestamp, timestamp = self.buildTimestamp(mes.timestamp)
                             pass
                         else:
                             # TODO add 'from' field
