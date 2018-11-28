@@ -74,7 +74,7 @@ class Interface:
                 for i in users:
                     datestamp, timestamp = self.buildTimestamp(users[i].timestamp)
                     online = users[i].isOnline
-                    print("{:10} | Last seen: {} {} | Status: {} ".format(i, datestamp, timestamp, online))
+                    print("{:10} | Last login: {} {} | Status: {} ".format(i, datestamp, timestamp, online))
             elif cmd[0] == self.LS_CMD:
                 # ls
                 print(self.client.listConversations())
