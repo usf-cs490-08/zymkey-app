@@ -70,11 +70,8 @@ class Interface:
                 print(self.HELP_STR)
             elif cmd[0] == self.USERS_CMD:
                 # users
-                #print(self.client.getUsers())
                 users = self.client.getUsers()
                 for i in users:
-                    #datestamp = date.fromtimestamp(users[i].timestamp//1000)
-                    #timestamp = time.strftime('%H:%M:%S', time.gmtime(users[i].timestamp/1000.0 - 28800))
                     datestamp, timestamp = self.buildTimestamp(users[i].timestamp)
                     online = users[i].isOnline
                     print("{:10} | Last seen: {} {} | Status: {} ".format(i, datestamp, timestamp, online))
@@ -95,7 +92,6 @@ class Interface:
                             userList = re.split(',', arg)
                     for mes in self.client.getConversation(userList):
                         if showTime:
-                            # TODO print timestamp + message
                             datestamp, timestamp = self.buildTimestamp(mes.timestamp)
                             print("{} {} | {}".format(datestamp, timestamp, mes.message))
                         else:
