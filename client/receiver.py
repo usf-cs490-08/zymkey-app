@@ -17,7 +17,8 @@ class MessageReceiver(Thread):
     def createConsumer(brokers, user):
         conf = {'bootstrap.servers': brokers, 'group.id': user + '-group',
                 'auto.offset.reset': 'earliest', 'enable.auto.commit': True, 
-                'session.timeout.ms': 6000, 'metadata.max.age.ms': 500}
+                'session.timeout.ms': 6000, 'metadata.max.age.ms': 500, 
+                'topic.metadata.refresh.interval.ms': 1000}
         return Consumer(conf)
 
     def shutdown(self):
