@@ -96,8 +96,8 @@ class Interface:
                     for mes in self.client.getConversation(userList):
                         if showTime:
                             # TODO print timestamp + message
-                            #datestamp, timestamp = self.buildTimestamp(mes.timestamp)
-                            pass
+                            datestamp, timestamp = self.buildTimestamp(mes.timestamp)
+                            print("{} {} | {}".format(datestamp, timestamp, mes.message))
                         else:
                             # TODO add 'from' field
                             print(mes.message)
