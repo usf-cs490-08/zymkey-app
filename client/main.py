@@ -91,17 +91,21 @@ class Interface:
                         else:
                             userList = re.split(',', arg)
                     for mes in self.client.getConversation(userList):
-                        # JSON Parsing added here - The King
+                        # JSON Parsing
+                        '''
                         json = mes.message.split(',')
                         user = re.sub('[^a-zA-Z0-9]', '', json[0].split(':')[1])
                         content = re.sub('[^a-zA-Z0-9]', '', json[1].splitz(':')[1])
+                        '''
                         if showTime:
                             datestamp, timestamp = self.buildTimestamp(mes.timestamp)
-                            print("{:^15} -- {} |@| {} {}".format(user, content, datestamp, timestamp))
+                            print("{} {} | {}".format(datestamp, timestamp, mes.message))
+                            #print("{:^15} -- {} |@| {} {}".format(user, content, datestamp, timestamp))
                         else:
-                            print("{:^15} -- {}".format(user, content))
+                            print(mes.message)
+                            #print("{:^15} -- {}".format(user, content))
 
-                        #End of Then King's code
+                        
                 pass
             elif cmd[0] == self.SEND_CMD:
                 # send <NAME>[,...,<NAME>] <MESSAGE>
