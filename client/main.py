@@ -75,9 +75,9 @@ class Interface:
                     datestamp, timestamp = self.buildTimestamp(users[i].timestamp)
                     online = users[i].isOnline
                     if online == "online":
-                        print("{:10} | Status: \u001b[32m{}\u001b[0m ".format(i, online))
+                        print("{:10} | Status: \u001b[32m{}\u001b[0m".format(i, online))
                     else:
-                        print("{:10} | Status: \u001b[31m{}\u001b[0m ".format(i, online))
+                        print("{:10} | Status: \u001b[31m{}\u001b[0m".format(i, online))
             elif cmd[0] == self.LS_CMD:
                 # ls
                 print(self.client.listConversations())
