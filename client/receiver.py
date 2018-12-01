@@ -61,7 +61,7 @@ class MessageReceiver(Thread):
                 if self.isUnread(msg):
                     #print('new message!', flush=True)
                     # From field parsed from the JSON object
-                    print('\nnew message from \u001b[34m{}\u001b[0m!'.format(user), flush=True, end="\r")
+                    print('\n*new message from \u001b[34m{}\u001b[0m!'.format(user), flush=True, end="\r")
 
                 self.consumer.commit(msg)
 
