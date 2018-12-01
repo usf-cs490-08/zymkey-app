@@ -105,7 +105,7 @@ class Interface:
                             print("{} {} | \u001b[34m{}\u001b[0m | {}".format(datestamp, timestamp, user, content))
                         else:
                             #print(mes.message)
-                            print("{} | {}".format(user, content))
+                            print("\u001b[34m{}\u001b[0m | {}".format(user, content))
                         
                 pass
             elif cmd[0] == self.SEND_CMD:

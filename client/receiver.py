@@ -51,18 +51,17 @@ class MessageReceiver(Thread):
                 val = msg.value().decode('utf-8')
 
                 # JSON parsing
-                '''
                 json = val.split(',')
-                user = re.sub('[^a-zA-Z0-9]', '', json[0].split(':')[1])
-                content = re.sub('[^a-zA-Z0-9]', '', json[1].splitz(':')[1])
-                '''
+                user = re.sub('[^a-zA-Z0-9_\s-]', '', json[0].split(':')[1]).strip()
+                content = re.sub('[^a-zA-Z0-9_\s-]', '', json[1].split(':')[1]).strip()
+                
                 timestamp = msg.timestamp()[1]
                 self.history.putMessage(users, val, timestamp)
 
                 if self.isUnread(msg):
-                    print('new message!', flush=True)
+                    #print('new message!', flush=True)
                     # From field parsed from the JSON object
-                    #print('new message from {}!'.format(user), flush=True)
+                    print('\nnew message from \u001b[34m{}\u001b[0m!'.format(user), flush=True, end="\r")
 
                 self.consumer.commit(msg)
 
