@@ -74,7 +74,10 @@ class Interface:
                 for i in users:
                     datestamp, timestamp = self.buildTimestamp(users[i].timestamp)
                     online = users[i].isOnline
-                    print("{:10} | Last login: {} {} | Status: {} ".format(i, datestamp, timestamp, online))
+                    if online == "online":
+                        print("{:10} | Status: \u001b[32m{}\u001b[0m ".format(i, online))
+                    else:
+                        print("{:10} | Status: \u001b[31m{}\u001b[0m ".format(i, online))
             elif cmd[0] == self.LS_CMD:
                 # ls
                 print(self.client.listConversations())
@@ -92,19 +95,17 @@ class Interface:
                             userList = re.split(',', arg)
                     for mes in self.client.getConversation(userList):
                         # JSON Parsing
-                        '''
                         json = mes.message.split(',')
-                        user = re.sub('[^a-zA-Z0-9]', '', json[0].split(':')[1])
-                        content = re.sub('[^a-zA-Z0-9]', '', json[1].splitz(':')[1])
-                        '''
+                        user = re.sub('[^a-zA-Z0-9_\s-]', '', json[0].split(':')[1]).strip()
+                        content = re.sub('[^a-zA-Z0-9_\s-]', '', json[1].split(':')[1]).strip()
+                        
                         if showTime:
                             datestamp, timestamp = self.buildTimestamp(mes.timestamp)
-                            print("{} {} | {}".format(datestamp, timestamp, mes.message))
-                            #print("{:^15} -- {} |@| {} {}".format(user, content, datestamp, timestamp))
+                            #print("{} {} | {}".format(datestamp, timestamp, mes.message))
+                            print("{} {} | \u001b[34m{}\u001b[0m | {}".format(datestamp, timestamp, user, content))
                         else:
-                            print(mes.message)
-                            #print("{:^15} -- {}".format(user, content))
-
+                            #print(mes.message)
+                            print("{} | {}".format(user, content))
                         
                 pass
             elif cmd[0] == self.SEND_CMD:
