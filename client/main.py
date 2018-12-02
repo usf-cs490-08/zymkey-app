@@ -107,10 +107,10 @@ class Interface:
                         if showTime:
                             datestamp, timestamp = self.buildTimestamp(mes.timestamp)
                             #print("{} {} | {}".format(datestamp, timestamp, mes.message))
-                            print("{} {} | \u001b[34m{}\u001b[0m | {}".format(datestamp, timestamp, user, content))
+                            print("{} {} | \u001b[34m{:10}\u001b[0m | {}".format(datestamp, timestamp, user, content))
                         else:
                             #print(mes.message)
-                            print("\u001b[34m{}\u001b[0m | {}".format(user, content))
+                            print("\u001b[34m{:10}\u001b[0m | {}".format(user, content))
                         
                 pass
             elif cmd[0] == self.SEND_CMD:
