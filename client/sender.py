@@ -12,16 +12,19 @@ class MessageSender:
         return Producer(**config) 
 
     def sendMessage(self, userList, message):
-        if self.user not in userList:
-            userList.append(self.user)
-        userList.sort()
+        if 'GLOBAL' in userList:
+            userList = ['GLOBAL']
+        else:
+            if self.user not in userList:
+                userList.append(self.user)
+                userList.sort()
         topic = '-'.join(userList)
 
         def delivery_callback(err, msg):
             if err:
                 print('sending error: %s' % err)
             else:
-                print('message sent!')
+                print('message sent to %s!' % ','.join(userList))
         try:
             formatMessage = "{{From: \"{}\", Message: \"{}\"}}".format(self.user, message)
             self.producer.produce(topic, formatMessage, on_delivery=delivery_callback)

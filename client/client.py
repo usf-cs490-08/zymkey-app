@@ -20,6 +20,9 @@ class ChatClient:
         self.userManager.goOnline()
 
     def sendMessage(self, userList, message):
+        if 'GLOBAL' in userList and len(userList) > 1:
+            self.sender.sendMessage(['GLOBAL'], message)
+            userList.remove('GLOBAL')
         self.sender.sendMessage(userList, message)
 
     def listConversations(self):
