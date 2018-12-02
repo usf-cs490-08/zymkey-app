@@ -98,18 +98,11 @@ class Interface:
                         json_obj = json.loads(mes.message)
                         user = json_obj["from"]
                         content = json_obj["message"]
-                        '''
-                        # JSON Parsing
-                        json = mes.message.split(',')
-                        user = re.sub('[^a-zA-Z0-9_\s-]', '', json[0].split(':')[1]).strip()
-                        content = re.sub('[^a-zA-Z0-9_\s-]', '', json[1].split(':')[1]).strip()
-                        '''
+
                         if showTime:
                             datestamp, timestamp = self.buildTimestamp(mes.timestamp)
-                            #print("{} {} | {}".format(datestamp, timestamp, mes.message))
                             print("{} {} | \u001b[34m{:10}\u001b[0m | {}".format(datestamp, timestamp, user, content))
                         else:
-                            #print(mes.message)
                             print("\u001b[34m{:10}\u001b[0m | {}".format(user, content))
                         
                 pass
