@@ -49,21 +49,12 @@ class MessageReceiver(Thread):
                 pass
             else:
                 users = re.split('-', msg.topic())
-                #val = msg.value().decode('utf-8')
-
                 json_str = msg.value().decode('utf-8')
                 json_obj = json.loads(json_str)
                 sender = json_obj["from"]
                 message = json_obj["message"]
 
-                '''
-                # JSON parsing
-                json = val.split(',')
-                fromUser = re.sub('[^a-zA-Z0-9_\s-]', '', json[0].split(':')[1]).strip()
-                content = re.sub('[^a-zA-Z0-9_\s-]', '', json[1].split(':')[1]).strip()
-                '''
                 timestamp = msg.timestamp()[1]
-                #self.history.putMessage(users, val, timestamp)
                 self.history.putMessage(users, json_str, timestamp)
                 
                 if self.isUnread(msg):
