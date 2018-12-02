@@ -27,8 +27,6 @@ class MessageSender:
             else:
                 print('message sent to %s!' % ','.join(userList))
         try:
-            #formatMessage = "{{From: \"{}\", Message: \"{}\"}}".format(self.user, message)
-            #self.producer.produce(topic, formatMessage, on_delivery=delivery_callback)
             json_obj = {"from": self.user, "message": message}
             json_str = json.dumps(json_obj)
             self.producer.produce(topic, json_str, on_delivery=delivery_callback)
