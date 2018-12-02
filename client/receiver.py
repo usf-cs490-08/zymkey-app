@@ -68,7 +68,7 @@ class MessageReceiver(Thread):
                 
                 if self.isUnread(msg):
                     # if this user sent it, ignore
-                    if (senr != self.user):
+                    if (sender != self.user):
                         if self.user in users:
                             users.remove(self.user)
                         if len(users) > 1:
