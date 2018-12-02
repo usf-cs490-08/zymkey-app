@@ -16,7 +16,7 @@ class MessageReceiver(Thread):
     @staticmethod
     def createConsumer(brokers, user):
         conf = {'bootstrap.servers': brokers, 'group.id': user + '-group',
-                'auto.offset.reset': 'earliest', 'enable.auto.commit': True, 
+                'auto.offset.reset': 'earliest', 'enable.auto.commit': False, 
                 'session.timeout.ms': 6000, 'metadata.max.age.ms': 500, 
                 'topic.metadata.refresh.interval.ms': 1000}
         return Consumer(conf)
@@ -52,18 +52,24 @@ class MessageReceiver(Thread):
 
                 # JSON parsing
                 json = val.split(',')
-                user = re.sub('[^a-zA-Z0-9_\s-]', '', json[0].split(':')[1]).strip()
+                fromUser = re.sub('[^a-zA-Z0-9_\s-]', '', json[0].split(':')[1]).strip()
                 content = re.sub('[^a-zA-Z0-9_\s-]', '', json[1].split(':')[1]).strip()
                 
                 timestamp = msg.timestamp()[1]
                 self.history.putMessage(users, val, timestamp)
 
                 if self.isUnread(msg):
-                    #print('new message!', flush=True)
-                    # From field parsed from the JSON object
-                    print('\n*new message from \u001b[34m{}\u001b[0m!'.format(user), flush=True, end="\r")
-
-                self.consumer.commit(msg)
+                    # if this user sent it, ignore
+                    if (fromUser != self.user):
+                        if self.user in users:
+                            users.remove(self.user)
+                        if len(users) > 1:
+                            print('\n*new message : { group: %s, from: %s, message: %s }' 
+                                    % (','.join(users), fromUser, content), flush=True)
+                        else:
+                            print('\n*new message : { from: %s, message: %s }' 
+                                    % (','.join(users), content), flush=True)
+                    self.consumer.commit(msg)
 
         self.consumer.close()        
 

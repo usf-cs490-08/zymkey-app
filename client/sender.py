@@ -12,6 +12,8 @@ class MessageSender:
         return Producer(**config) 
 
     def sendMessage(self, userList, message):
+        if self.user not in userList:
+            userList.append(self.user)
         userList.sort()
         topic = '-'.join(userList)
 
@@ -21,8 +23,6 @@ class MessageSender:
             else:
                 print('message sent!')
         try:
-            #self.producer.produce(topic, message, on_delivery=delivery_callback)
-            # New format to send message
             formatMessage = "{{From: \"{}\", Message: \"{}\"}}".format(self.user, message)
             self.producer.produce(topic, formatMessage, on_delivery=delivery_callback)
             self.producer.poll(5) # wait for callback
