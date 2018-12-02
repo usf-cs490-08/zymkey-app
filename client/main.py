@@ -1,3 +1,4 @@
+import json
 import re
 from client import ChatClient
 from history import Message
@@ -94,11 +95,15 @@ class Interface:
                         else:
                             userList = re.split(',', arg)
                     for mes in self.client.getConversation(userList):
+                        json_obj = json.loads(mes.message)
+                        user = json_obj["from"]
+                        content = json_obj["message"]
+                        '''
                         # JSON Parsing
                         json = mes.message.split(',')
                         user = re.sub('[^a-zA-Z0-9_\s-]', '', json[0].split(':')[1]).strip()
                         content = re.sub('[^a-zA-Z0-9_\s-]', '', json[1].split(':')[1]).strip()
-                        
+                        '''
                         if showTime:
                             datestamp, timestamp = self.buildTimestamp(mes.timestamp)
                             #print("{} {} | {}".format(datestamp, timestamp, mes.message))
