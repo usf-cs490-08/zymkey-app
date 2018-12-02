@@ -1,3 +1,4 @@
+import json
 import re
 from threading import Thread
 from confluent_kafka import Consumer, TopicPartition, OFFSET_BEGINNING
@@ -48,27 +49,34 @@ class MessageReceiver(Thread):
                 pass
             else:
                 users = re.split('-', msg.topic())
-                val = msg.value().decode('utf-8')
+                #val = msg.value().decode('utf-8')
 
+                json_str = msg.value().decode('utf-8')
+                json_obj = json.loads(json_str)
+                sender = json_obj["from"]
+                message = json_obj["message"]
+
+                '''
                 # JSON parsing
                 json = val.split(',')
                 fromUser = re.sub('[^a-zA-Z0-9_\s-]', '', json[0].split(':')[1]).strip()
                 content = re.sub('[^a-zA-Z0-9_\s-]', '', json[1].split(':')[1]).strip()
-                
+                '''
                 timestamp = msg.timestamp()[1]
-                self.history.putMessage(users, val, timestamp)
-
+                #self.history.putMessage(users, val, timestamp)
+                self.history.putMessage(users, json_str, timestamp)
+                
                 if self.isUnread(msg):
                     # if this user sent it, ignore
-                    if (fromUser != self.user):
+                    if (senr != self.user):
                         if self.user in users:
                             users.remove(self.user)
                         if len(users) > 1:
                             print('\n*new message : { group: %s, from: %s, message: %s }' 
-                                    % (','.join(users), fromUser, content), flush=True)
+                                    % (','.join(users), sender, message), flush=True)
                         else:
                             print('\n*new message : { from: %s, message: %s }' 
-                                    % (','.join(users), content), flush=True)
+                                    % (','.join(users), message), flush=True)
                     self.consumer.commit(msg)
 
         self.consumer.close()        
