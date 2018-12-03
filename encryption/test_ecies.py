@@ -21,3 +21,4 @@ plaintext = ptdata.decode()
 
 print(plaintext)
 print(type(plaintext))
+
