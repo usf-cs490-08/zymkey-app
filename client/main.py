@@ -98,7 +98,10 @@ class Interface:
                     for mes in self.client.getConversation(userList):
                         json_obj = json.loads(mes.message)
                         user = json_obj["from"]
-                        content = json_obj["message"]
+                        #content = json_obj["message"]
+                        encrypted = bytes(json_obj["message"])
+                        cbytes = decrypt_s(encrypted)
+                        content = cbytes.decode()
 
                         if showTime:
                             datestamp, timestamp = self.buildTimestamp(mes.timestamp)
