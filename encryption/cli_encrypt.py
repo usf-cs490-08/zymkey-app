@@ -1,7 +1,6 @@
 import argparse
 import json
 import os
-import zymkey
 from ecies.utils import generate_eth_key, generate_key
 from ecies import encrypt, decrypt
 
