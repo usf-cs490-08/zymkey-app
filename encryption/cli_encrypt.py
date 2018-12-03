@@ -9,6 +9,9 @@ def get_args():
     parser = argparse.ArgumentParser(description='CLI encrypt')
 
     parser.add_argument('-i', '--identity', required=True)
+    parser.add_argument('-t', '--to')
+    parser.add_argument('-f', '--filename')
+    parser.add_argument('-m', '--message')
     
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument('-e', '--encrypt', action='store_true')
@@ -17,20 +20,35 @@ def get_args():
     
     return parser.parse_args()
 
-def encrypt(identity, message):
-    filename = identity + ".json"
-    f = open(filename, 'rb')
+def encrypt_m(sender, receiver, message):
+    f = open("address.json", 'r')
+    keys = json.load(f)
+    ptdata = message.encode()
+    ciphertext = encrypt(keys[receiver], ptdata)
+    bytetolist = list(ciphertext)
 
-    #src = f.read()
+    json_obj = {"from": sender, "message": bytetolist}
+    json_str = json.dumps(json_obj)
+    m = open("message.json", 'w')
+    m.write(json_str)
+    m.close()
     f.close()
     # TODO: call zymkey script to unlock json file content
     #dst = zymkey.client.unlock(src)
     #print(dst)
     
-    pass
+def decrypt_m(identity, message_file):
+    filename = identity + ".json"
+    f = open(filename, 'r')
+    m = open(message_file, 'r')
+    keys = json.load(f)
+    json_obj = json.load(m)
+    listtobyte = bytes(json_obj["message"])
+    ptdata = decrypt(keys["private"], listtobyte)
+    plaintext = ptdata.decode()
+    print(json_obj["from"] + " says \"" + plaintext + "\"")
+    f.close()
 
-def decrypt(identity, message):
-    pass
 
 def gen_key(identity):
     filename = identity + ".json"
@@ -60,8 +78,10 @@ def main():
         gen_key(args.identity)
     if args.encrypt:
         print("encrypting")
+        encrypt_m(args.identity, args.to, args.message)
     elif args.decrypt:
         print("decrypting")
+        decrypt_m(args.identity, args.filename)
         
 
 if __name__ == '__main__':
