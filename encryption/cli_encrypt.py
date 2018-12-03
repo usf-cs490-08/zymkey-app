@@ -44,10 +44,12 @@ def gen_key(identity):
     json_obj = {"user": identity, "private": prv_key, "public": pub_key}
     json_str = json.dumps(json_obj)
 
+    f = open(filename, 'w')
+    f.write(json_str)
+    f.close()
+    
     # TODO: Call zymkey script to lock json_str
-    
     #f = open(filename, 'wb')
-    
     #f.close()
 
 def main():
