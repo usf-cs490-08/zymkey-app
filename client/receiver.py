@@ -2,6 +2,7 @@ import json
 import re
 from threading import Thread
 from confluent_kafka import Consumer, TopicPartition, OFFSET_BEGINNING
+from encrypter import decrypt_s
 
 class MessageReceiver(Thread):
 
@@ -52,7 +53,10 @@ class MessageReceiver(Thread):
                 json_str = msg.value().decode('utf-8')
                 json_obj = json.loads(json_str)
                 sender = json_obj["from"]
-                message = json_obj["message"]
+                #message = json_obj["message"]
+                encrypted = bytes(json_obj["message"])
+                message_bytes = decrypt_s(encrypted)
+                message = message_bytes.decode()
 
                 timestamp = msg.timestamp()[1]
                 self.history.putMessage(users, json_str, timestamp)

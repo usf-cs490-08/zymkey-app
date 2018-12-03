@@ -4,6 +4,7 @@ from client import ChatClient
 from history import Message
 from datetime import date
 import time
+from encrypter import decrypt_s
 
 class Interface:
 

@@ -1,5 +1,6 @@
 import json
 from confluent_kafka import Producer
+from encrypter import encrypt_s
 
 class MessageSender:
 
@@ -27,7 +28,9 @@ class MessageSender:
             else:
                 print('message sent to %s!' % ','.join(userList))
         try:
-            json_obj = {"from": self.user, "message": message}
+            encrypted = encrypt_s(message.encode())
+            #json_obj = {"from": self.user, "message": message}
+            json_obj = {"from": self.user, "message": list(encrypted)}
             json_str = json.dumps(json_obj)
             self.producer.produce(topic, json_str, on_delivery=delivery_callback)
             self.producer.poll(5) # wait for callback
